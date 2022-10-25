@@ -1,4 +1,5 @@
-﻿using ItemManagement_v2.Models;
+﻿using ItemManagement_v2.Filters;
+using ItemManagement_v2.Models;
 using ItemManagement_v2.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -25,6 +26,8 @@ namespace ItemManagement_v2.Controllers
             List<Collection> collections = _collectionService.GetCollections();
             return View(collections);
         }
+
+        [AuthenticationFilter]
         public ActionResult Create()
         {
             List<Item> Items = _itemService.GetItems();
@@ -32,6 +35,7 @@ namespace ItemManagement_v2.Controllers
             return View(Items);
         }
 
+        [AuthenticationFilter]
         [HttpPost]
         public ActionResult Create(Collection collection)
         {
@@ -50,6 +54,8 @@ namespace ItemManagement_v2.Controllers
 
             return View(itemCollection);
         }
+
+        [AuthenticationFilter]
         public ActionResult Edit(long id)
         {
             Collection itemCollection = _collectionService.GetCollectionById(id);
@@ -59,6 +65,7 @@ namespace ItemManagement_v2.Controllers
             return View(itemCollection);
         }
 
+        [AuthenticationFilter]
         [HttpPost]
         public ActionResult Edit(Collection collection)
         {
@@ -76,6 +83,7 @@ namespace ItemManagement_v2.Controllers
             return RedirectToAction("Index");
         }
 
+        [AuthenticationFilter]
         public ActionResult Delete(long id)
         {
             _collectionService.DeleteCollection(id);

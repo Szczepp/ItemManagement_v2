@@ -27,7 +27,10 @@ namespace ItemManagement_v2.Repositories
 
         public void DeleteItem(long id)
         {
-            throw new System.NotImplementedException();
+            var item = this.GetItemById(id);
+            _db.Items.Remove(item);
+            _db.SaveChanges();
+
         }
 
         public Item GetItemById(long id)
