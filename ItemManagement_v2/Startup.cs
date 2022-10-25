@@ -16,6 +16,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using ItemManagement_v2.Services.Interfaces;
 using ItemManagement_v2.Repositories.Interfaces;
+using Westwind.AspNetCore.Markdown;
 
 namespace ItemManagement_v2
 {
@@ -51,6 +52,9 @@ namespace ItemManagement_v2
             services.AddScoped<ICollectionRepository, CollectionRepository>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
+            services.AddMarkdown();
+            services.AddMvc().AddApplicationPart(typeof(MarkdownPageProcessorMiddleware).Assembly);
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -67,6 +71,8 @@ namespace ItemManagement_v2
                 app.UseHsts();
             }
             app.UseHttpsRedirection();
+            app.UseMarkdown();
+
             app.UseStaticFiles();
 
             app.UseRouting();

@@ -36,12 +36,10 @@
                                         <img src="data:image;base64,@item.Image" class="card-img-top fit-image" alt="..." height="250">
                                         <div class="card-body">
                                             <h5 class="card-title">@item.Name</h5>
-                                            <div class="container-fluid justify-content-between">
-                                                <label class="form-check-label" for="@item.Id">
-                                                    Added
-                                                </label>
+                                            <div class="form-row">  
+                                                <label class="form-check-label" for="@item.Id">  Added  </label>
                                                 <input class="form-check-input big-checkbox" name="Items" type="checkbox" value="@item.Id" id="@item.Id" checked>
-                                            </div>
+                                           </div>
                                             <p class="card-text">@item.Tag</p>
                                             <a href="/item/details?id=@item.Id" class="btn btn-primary"> Show details </a>
                                         </div>
