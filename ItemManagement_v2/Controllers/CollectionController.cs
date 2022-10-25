@@ -30,6 +30,7 @@ namespace ItemManagement_v2.Controllers
         [AuthenticationFilter]
         public ActionResult Create()
         {
+            ViewBag.AvailableTopics = new List<String> { "Spring", "Summer", "Fall", "Winter" };  
             List<Item> Items = _itemService.GetItems();
 
             return View(Items);

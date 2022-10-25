@@ -8,15 +8,24 @@
 <form action="/collection/create" method="POST" enctype="multipart/form-data">
     <div class="form-row">
         <div class="form-group col-md-6">
-            <label for="Name"> Item Name </label>
-            <input type="text" class="form-control" id="ItemName" name="Name" placeholder="Item Name" />
+            <label for="Name"> Collection Name </label>
+            <input type="text" class="form-control" id="CollectionName" name="Name" placeholder="Collection Name" />
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label for="CollectionTopic"> Collection Topic </label>
+            <select class="form-control" id="CollectionTopic" name="Topic">
+            @foreach (string topic in ViewBag.AvailableTopics) {
+                <option value="@topic"> @topic </option>
+            }
+            </select>
         </div>
     </div>
     <div class="form-row">
         <div class="form-group col-md-12">
             <label for="Description"> Description </label>
-            <textarea class="form-control rounded-0" id="exampleFormControlTextarea1" rows="10" name="Description" placeholder="Description"></textarea>
-
+            <textarea class="form-control rounded-0" id="exampleFormControlTextarea1" rows="10" name="Description" placeholder="Markdown text..."></textarea>
         </div>
     </div>
     <div class="form-row">
