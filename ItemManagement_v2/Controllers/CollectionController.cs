@@ -62,6 +62,7 @@ namespace ItemManagement_v2.Controllers
             Collection itemCollection = _collectionService.GetCollectionById(id);
             ViewBag.ItemsInCollection = _collectionService.GetItemsFromCollection(itemCollection);
             ViewBag.ItemsNotInCollection = _collectionService.GetItemsNotFromCollection(itemCollection);
+            ViewBag.AvailableTopics = new List<String> { "Spring", "Summer", "Fall", "Winter" };
 
             return View(itemCollection);
         }

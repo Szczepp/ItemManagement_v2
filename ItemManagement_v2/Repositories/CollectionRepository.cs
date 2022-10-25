@@ -29,7 +29,7 @@ namespace ItemManagement_v2.Repositories
                 }
             }
             var author = _db.Users.Find(userId);
-            collection.IdentityUser = author;
+            collection.ApplicationUser = author;
             collection.Image = image64;
             collection.Items = ItemsList;
             _db.Collections.Add(collection);
@@ -47,7 +47,7 @@ namespace ItemManagement_v2.Repositories
         {
             return _db.Collections.Where(temp => temp.Id == id)
                 .Include(c => c.Items)
-                .Include(c => c.IdentityUser)
+                .Include(c => c.ApplicationUser)
                 .FirstOrDefault();
         }
 

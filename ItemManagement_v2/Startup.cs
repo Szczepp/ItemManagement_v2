@@ -19,6 +19,7 @@ using ItemManagement_v2.Services.Interfaces;
 using ItemManagement_v2.Repositories.Interfaces;
 using Westwind.AspNetCore.Markdown;
 using System.Net;
+using ItemManagement_v2.Models;
 
 namespace ItemManagement_v2
 {
@@ -37,7 +38,7 @@ namespace ItemManagement_v2
             services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlServer(
                 Configuration.GetConnectionString("DefaultLocalConnection")));
-            services.AddIdentity<IdentityUser, IdentityRole>(
+            services.AddIdentity<ApplicationUser, IdentityRole>(
                 options =>
                     {
                         options.SignIn.RequireConfirmedAccount = false;
@@ -57,10 +58,7 @@ namespace ItemManagement_v2
 
             services.AddMarkdown();
             services.AddMvc().AddApplicationPart(typeof(MarkdownPageProcessorMiddleware).Assembly);
-            /*services.AddControllers(config =>
-            {
-                config.Filters.Add(new AuthenticationFilter());
-            });*/
+            
             services.AddControllersWithViews();
 
         }

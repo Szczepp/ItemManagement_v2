@@ -12,7 +12,7 @@ namespace ItemManagement_v2.Models
         public string Topic { get; set; }
         public string Image { get; set; }
 
-        public virtual IdentityUser IdentityUser { get; set; }
+        public virtual ApplicationUser ApplicationUser { get; set; }
 
         public virtual ICollection<Item> Items { get; set; }
     }
