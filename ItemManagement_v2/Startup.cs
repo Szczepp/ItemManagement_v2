@@ -47,6 +47,8 @@ namespace ItemManagement_v2
             services.AddRazorPages();
             services.AddScoped<IItemService, ItemService>();
             services.AddScoped<IItemRepository, ItemRepository>();
+            services.AddScoped<ICollectionService, CollectionService>();
+            services.AddScoped<ICollectionRepository, CollectionRepository>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
         }

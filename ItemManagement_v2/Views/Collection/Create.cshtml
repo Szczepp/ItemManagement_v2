@@ -1,0 +1,59 @@
+﻿@model List<Item>
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create a Collection</h2>
+
+<form action="/collection/create" method="POST" enctype="multipart/form-data">
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label for="Name"> Item Name </label>
+            <input type="text" class="form-control" id="ItemName" name="Name" placeholder="Item Name" />
+        </div>
+        <div class="form-group col-md-6">
+            <label for="Description"> Description </label>
+            <input type="text" class="form-control" id="Description" name="Description" placeholder="Tag" />
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label for="Image"> Add Image  </label>
+            <input type="file" class="form-control-file" id="file" name="Image" required />
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-12">
+            <div class="py-5">
+                <div class="container">
+                    <div class="row hidden-md-up">
+                        @foreach (var item in Model)
+                        {
+                            <div class="col-md-4 mt-3">
+                                <div class="card" style="width: 18rem;">
+                                    <div class="card-block">
+                                        <img src="data:image;base64,@item.Image" class="card-img-top fit-image" alt="..." height="250">
+                                        <div class="card-body">
+                                            <h5 class="card-title">@item.Name</h5>
+                                            <div class="card-title">
+                                                <label class="form-check-label" for="@item.Id">
+                                                    Add to collection
+                                                </label>
+                                                <input class="form-check-input big-checkbox" name="Items" type="checkbox" value="@item.Id" id="@item.Id">
+                                            </div>
+                                            <p class="card-text">@item.Tag</p>
+                                            <a href="/item/details?id=@item.Id" class="btn btn-primary"> Show details </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-success"> Create </button>
+    <a class="btn btn-danger" href="/home"> Cancel</a>
+</form>
