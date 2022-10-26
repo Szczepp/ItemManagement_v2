@@ -1,0 +1,52 @@
+﻿@model List<ApplicationUser>
+    
+@{
+    int loopCounter = 1;
+    int loopCounter2 = 1;
+}
+
+<h1> User Management </h1>
+
+<div class="table-responsive text-nowrap">
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th > # </th>
+            <th > User ID </th>
+            <th > UserName </th>
+            <th > User Email </th>
+            <th > IsActive </th>
+            <th > Role </th>
+            <th > Action </th>
+            <th >  </th>
+            <th >  </th>
+            <th >  </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var user in Model) {
+            <tr>
+                <th scope="row">@(loopCounter++)</th>
+                <td> @user.Id </td>
+                <td> @user.UserName </td>
+                <td> @user.Email </td>
+                <td> @user.IsActive </td>
+                <td> User role here </td>
+                <td colspan="4"><span class="no-wrap">
+                        <a class="nav-link text-dark" href="/admin/applicationUser/details?id=@user.Id"> <h4> <i class="bi bi-eye"></i> </h4> </a>
+                        <a class="nav-link text-dark" href="/admin/applicationUser/edit?id=@user.Id"> <h4> <i class="bi bi-pencil-square"></i> </h4> </a>
+                    @if(user.IsActive) {
+                            <a class="nav-link text-dark" href="/admin/applicationUser/block?id=@user.Id"> <h4> <i class="bi bi-lock"></i> </h4> </a>
+                    }else {
+                            <a class="nav-link text-dark" href="/admin/applicationUser/unblock?id=@user.Id"> <h4> <i class="bi bi-unlock"></i>  </h4></a>
+                    }
+                        @*icon to remove from admin<i class="bi bi-arrow-down-square"></i>*@
+                        <a class="nav-link text-dark" href="/admin/applicationUser/addToAdmin?id=@user.Id"> <h4> <i class="bi bi-arrow-up-square"></i> </h4></a>
+                        <a class="nav-link text-dark" href="/admin/applicationUser/delete?id=@user.Id" onclick="return confirm('Are you sure?')"> <h4> <i class="bi bi-trash"></i> </h4> </a>
+                        </span>
+                    </td>
+            </tr>
+            }
+    </tbody>
+</table>
+</div>

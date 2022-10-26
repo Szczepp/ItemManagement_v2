@@ -54,6 +54,8 @@ namespace ItemManagement_v2
             services.AddScoped<IItemRepository, ItemRepository>();
             services.AddScoped<ICollectionService, CollectionService>();
             services.AddScoped<ICollectionRepository, CollectionRepository>();
+            services.AddScoped<IApplicationUserService, ApplicationUserService>();
+            services.AddScoped<IApplicationUserRepository, ApplicationUserRepository>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddMarkdown();

@@ -84,6 +84,13 @@ namespace ItemManagement_v2.Areas.Identity.Pages.Account
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
+                    ApplicationUser user = await _userManager.FindByEmailAsync(Input.Email);
+                    
+                    if( await _userManager.IsInRoleAsync(user, "Admin"))
+                    {
+                        _logger.LogInformation("Admin logged in");
+                        return LocalRedirect("/admin/applicationUser");
+                    }
                     _logger.LogInformation("User logged in.");
                     return LocalRedirect(returnUrl);
                 }
@@ -91,11 +98,7 @@ namespace ItemManagement_v2.Areas.Identity.Pages.Account
                 {
                     return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, RememberMe = Input.RememberMe });
                 }
-                if (result.IsLockedOut)
-                {
-                    _logger.LogWarning("User account locked out.");
-                    return RedirectToPage("./Lockout");
-                }
+                
                 else
                 {
                     ModelState.AddModelError(string.Empty, "Invalid login attempt.");
