@@ -1,0 +1,28 @@
+﻿@model List<Item>
+@{
+}
+
+    <h2> Card View </h2>
+<div class="container">
+    <div class="py-5">
+        <div class="container">
+            <div class="row hidden-md-up">
+                @foreach (var item in Model)
+                {
+                    <div class="col-md-4 mt-3">
+                        <div class="card" style="width: 18rem;">
+                            <div class="card-block">
+                                <img src="data:image;base64,@item.Image" class="card-img-top fit-image" alt="..." height="200"> 
+                                <div class="card-body ">
+                                    <h5 c lass="card-title">@item.Name</h5>
+                                    <a href="/item/details?id=@item.Id" class="btn btn-primary"> Show details </a>
+                                    <a href="/item/edit?id=@item.Id" class="btn btn-primary"> Edit </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

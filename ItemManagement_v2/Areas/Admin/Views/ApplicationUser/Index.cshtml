@@ -1,0 +1,76 @@
+﻿@model IEnumerable<ApplicationUserWithRoles>
+    
+@{
+    int loopCounter = 1;
+    int loopCounter2 = 1;
+}
+
+<h1> User Management </h1>
+
+<div class="table-responsive text-nowrap">
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th > # </th>
+            <th > User ID </th>
+            <th > UserName </th>
+            <th > User Email </th>
+            <th > Status </th>
+            <th > Role </th>
+            <th > Details </th>
+            <th > Edit</th>
+            <th > Status </th>
+            <th > Privilege </th>
+            <th > Delete </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var user in Model) {
+            <tr>
+                <th scope="row">@(loopCounter++)</th>
+                <td> @user.Id </td>
+                <td> @user.Username </td>
+                <td> @user.Email </td>
+                <td> @user.IsActive </td>
+                <td> 
+                    @if(@user.RoleId == "2") {
+                        <p>Admin</p>
+                    } else {
+                        <p>User</p>
+                    }
+                </td>
+                <td>
+                        <a class="nav-link text-dark" href="/admin/applicationUser/details?id=@user.Id"> <h4> <i class="bi bi-eye" title="Show details"></i> </h4> </a>
+                </td>
+                <td>
+                        <a class="nav-link text-dark" href="/admin/applicationUser/edit?id=@user.Id"> <h4> <i class="bi bi-pencil-square" title="Edit"></i> </h4> </a>
+                </td>
+                <td>
+                        @if (user.IsActive)
+                        {
+                            <a class="nav-link text-dark" href="/admin/applicationUser/block?id=@user.Id"> <h4> <i class="bi bi-lock" title="Block User"></i> </h4> </a>
+                        }
+                        else
+                        {
+                            <a class="nav-link text-dark" href="/admin/applicationUser/unblock?id=@user.Id"> <h4> <i class="bi bi-unlock" title="Unblock User"></i>  </h4></a>
+                        }
+                </td>
+                <td>
+                        @if (user.RoleId == "1")
+                        {
+                            <a class="nav-link text-dark" href="/admin/applicationUser/addToAdmin?id=@user.Id"> <h4> <i class="bi bi-arrow-up-square" title="Add to Admin"></i> </h4></a>
+                        }
+                        else
+                        {
+                            <a class="nav-link text-dark" href="/admin/applicationUser/removeFromAdmin?id=@user.Id"> <h4> <i class="bi bi-arrow-down-square" title="Remove from Admin"></i> </h4></a>
+                        }
+                </td>        
+                <td>
+                        <a class="nav-link text-dark" href="/admin/applicationUser/delete?id=@user.Id" onclick="return confirm('Are you sure?')"> <h4> <i class="bi bi-trash" title="Delete User"></i> </h4> </a>
+
+                </td>
+            </tr>
+            }
+    </tbody>
+</table>
+</div>

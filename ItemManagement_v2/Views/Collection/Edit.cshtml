@@ -1,0 +1,102 @@
+﻿@model Collection
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Edit Collection </h2>
+
+<form action="/collection/edit?id=@Model.Id" method="POST" enctype="multipart/form-data">
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label for="Name"> Item Name </label>
+            <input type="text" class="form-control" id="ItemName" name="Name" placeholder="Name" value="@Model.Name" />
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label for="CollectionTopic"> Collection Topic </label>
+            <select class="form-control" id="CollectionTopic" name="Topic">
+                @foreach (string topic in ViewBag.AvailableTopics)
+                {
+                    <option value="@topic"> @topic </option>
+                }
+            </select>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-12">
+            <label for="Description"> Description </label>
+            <textarea class="form-control rounded-0" id="exampleFormControlTextarea1" rows="10" name="Description" placeholder="Markdown text..."></textarea>
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label for="Image"> Update Image  </label>
+            <input type="file" class="form-control-file" id="file" name="Image"/>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-12">
+                        <h1> In collection </h1>
+            <div class="py-5">
+                <div class="container">
+                    <div class="row hidden-md-up">
+                        @foreach (var item in ViewBag.ItemsInCollection)
+                        {
+                            <div class="col-md-4">
+                                <div class="card" style="width: 18rem;">
+                                    <div class="card-block">
+                                        <img src="data:image;base64,@item.Image" class="card-img-top fit-image" alt="..." height="250">
+                                        <div class="card-body">
+                                            <h5 class="card-title">@item.Name</h5>
+                                            <div class="form-row">  
+                                                <label class="form-check-label" for="@item.Id">  Added  </label>
+                                                <input class="form-check-input big-checkbox" name="Items" type="checkbox" value="@item.Id" id="@item.Id" checked>
+                                           </div>
+                                            <p class="card-text">@item.Tag</p>
+                                            <a href="/item/details?id=@item.Id" class="btn btn-primary"> Show details </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-12">
+                        <h1> Not in collection </h1>
+            <div class="py-5">
+                <div class="container">
+                    <div class="row hidden-md-up">
+                        @foreach (var item in ViewBag.ItemsNotInCollection)
+                        {
+                            <div class="col-md-4">
+                                <div class="card" style="width: 18rem;">
+                                    <div class="card-block">
+                                        <img src="data:image;base64,@item.Image" class="card-img-top fit-image" alt="..." height="250">
+                                        <div class="card-body">
+                                            <h5 class="card-title">@item.Name</h5>
+                                            <div class="form-check  d-flex justify-content-between">
+                                                <label class="form-check-label" for="@item.Id"> Added </label>
+                                                <input class="form-check-input big-checkbox" name="Items" type="checkbox" value="@item.Id" id="@item.Id">
+                                            </div>
+                                            <p class="card-text">@item.Tag</p>
+                                            <a href="/item/details?id=@item.Id" class="btn btn-primary"> Show details </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-success"> Update </button>
+    <a class="btn btn-danger" href="/home"> Cancel</a>
+</form>
