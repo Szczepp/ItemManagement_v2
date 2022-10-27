@@ -1,6 +1,11 @@
+using ItemManagement_v2.Contexts;
+using ItemManagement_v2.Repositories;
+using ItemManagement_v2.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -8,6 +13,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using ItemManagement_v2.Services.Interfaces;
+using ItemManagement_v2.Repositories.Interfaces;
 
 namespace ItemManagement_v2
 {
@@ -24,6 +32,23 @@ namespace ItemManagement_v2
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddDbContext<ApplicationDbContext>(options =>
+            options.UseSqlServer(
+                Configuration.GetConnectionString("DefaultLocalConnection")));
+            services.AddIdentity<IdentityUser, IdentityRole>(
+                options =>
+                    {
+                        options.SignIn.RequireConfirmedAccount = false;
+                    }
+                    )
+                .AddDefaultUI()
+                .AddDefaultTokenProviders()
+                .AddEntityFrameworkStores<ApplicationDbContext>();
+            services.AddRazorPages();
+            services.AddScoped<IItemService, ItemService>();
+            services.AddScoped<IItemRepository, ItemRepository>();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -44,6 +69,7 @@ namespace ItemManagement_v2
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
@@ -51,6 +77,7 @@ namespace ItemManagement_v2
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapRazorPages();
             });
         }
     }
