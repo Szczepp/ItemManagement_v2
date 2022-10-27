@@ -73,5 +73,10 @@ namespace ItemManagement_v2.Services
 
             return Convert.ToBase64String(imageBytes);
         }
+
+        public List<Collection> GetUserCollections(string userId)
+        {
+            return _collectionRepo.GetUserCollections(userId);
+        }
     }
 }

@@ -43,6 +43,11 @@ namespace ItemManagement_v2.Repositories
             return _db.Items.ToList();
         }
 
+        public List<Item> GetUserItems(string userId)
+        {
+            return _db.Items.Include(i => i.ApplicationUser).Where(i => i.ApplicationUser.Id == userId).ToList();
+        }
+
         public List<Item> SearchItem(string Name)
         {
             throw new System.NotImplementedException();

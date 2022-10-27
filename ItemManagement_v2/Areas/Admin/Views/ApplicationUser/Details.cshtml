@@ -1,0 +1,90 @@
+﻿@model ApplicationUser
+
+@{
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <h3> Username:  </h3>
+        </div>
+        <div class="col-md-6">
+            <h3> @Model.UserName  </h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <h3> Email:  </h3>
+        </div>
+        <div class="col-md-6">
+            <h3> @Model.Email  </h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <h3> Status:  </h3>
+        </div>
+        <div class="col-md-6">
+            @if(Model.IsActive) {
+                <h3> Active </h3>
+            } else {
+                <h3> Blocked </h3>
+            }
+        </div>
+    </div>
+    <div class="row mt-3">
+        @if (ViewBag.UserCollections.Count <= 0) {
+            <h2> This user doesn't have any collections yet </h2>
+        } else {
+        <h2> Collections of @Model.UserName </h2>
+        <div class="col-md-12">
+            <table class="table">
+                <tr>
+                    <th> Collection Id </th>
+                    <th> Collection Name </th>
+                    <th> Collection Topic </th>
+                    <th> Collection image </th>
+                </tr>
+                @foreach (Collection coll in ViewBag.UserCollections)
+                {
+                    <tr>
+                        <td> @coll.Id </td>
+                        <td> <a href="/collection/details?id=@coll.Id"> @coll.Name </a> </td>
+                        <td> @coll.Topic </td>
+                        <td>
+                            <img src="data:image;base64,@coll.Image" class="img-fluid" alt="collImage/@coll.Id" height="50" width="50">
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+        }
+    </div>
+    <div class="row mt-3">
+        @if (ViewBag.UserItems.Count <= 0) {
+            <h2> This user doesn't have any items yet </h2>
+        } else {
+        <h2> Items of @Model.UserName </h2>
+        <div class="col-md-12">
+            <table class="table">
+                <tr>
+                    <th> Item Id </th>
+                    <th> Item Name </th>
+                    <th> Item Tags </th>
+                    <th> Item image </th>
+                </tr>
+            @foreach(Item item in ViewBag.UserItems) {
+                <tr>
+                    <td> @item.Id </td>
+                        <td> <a href="/item/details?id=@item.Id"> @item.Name </a> </td>
+                    <td> @item.Tag </td>
+                    <td> 
+                            <img src="data:image;base64,@item.Image" class="img-fluid" alt="itemImage/@item.Id" height="50" width="50">
+                    </td>
+                </tr>
+            }
+            </table>
+        </div>
+        }
+    </div>
+</div>

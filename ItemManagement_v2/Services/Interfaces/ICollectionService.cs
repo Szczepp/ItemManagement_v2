@@ -8,6 +8,7 @@ namespace ItemManagement_v2.Services.Interfaces
     {
         List<Collection> GetCollections();
         List<Collection> SearchCollection(string Name);
+        List<Collection> GetUserCollections(string userId);
         Collection GetCollectionById(long id);
         void CreateCollection(Collection collection, string userId, string FormItems, IFormFile file);
         void UpdateCollection(Collection collection, string FormItems, IFormFile file);
