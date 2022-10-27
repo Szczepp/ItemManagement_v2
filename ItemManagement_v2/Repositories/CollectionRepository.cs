@@ -67,6 +67,11 @@ namespace ItemManagement_v2.Repositories
             return _db.Items.Where(temp => !ItemsInCollectionIds.Contains(temp.Id)).ToList();
         }
 
+        public List<Collection> GetUserCollections(string userId)
+        {
+            return _db.Collections.Include(c => c.ApplicationUser).Where(c => c.ApplicationUser.Id == userId).ToList();
+        }
+
         public List<Collection> SearchCollection(string Name)
         {
             throw new System.NotImplementedException();

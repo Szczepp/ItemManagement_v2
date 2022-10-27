@@ -1,11 +1,13 @@
 ﻿using ItemManagement_v2.Contexts;
 using ItemManagement_v2.Models;
+using ItemManagement_v2.ViewModels;
 using ItemManagement_v2.Repositories.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Threading.Tasks.Dataflow;
 
 namespace ItemManagement_v2.Repositories
 {
@@ -38,14 +40,15 @@ namespace ItemManagement_v2.Repositories
         public async Task<IActionResult> AddApplicationUserToAdmin(string userId)
         {
             var user = this.GetApplicationUserById(userId);
-            await _userManager.AddToRoleAsync(user, "Admin");
+            var result =  _userManager.AddToRoleAsync(user, "Admin").Result;
             return null;
         }
 
-        public void RemoveApplicationUserFromAdmin(string userId)
+        public Task<IActionResult> RemoveApplicationUserFromAdmin(string userId)
         {
             var user = this.GetApplicationUserById(userId);
-            _userManager.RemoveFromRoleAsync(user, "Admin");
+            var result = _userManager.RemoveFromRoleAsync(user, "Admin").Result;
+            return null;
         }
 
         public void BlockApplicationUser(string userId)
@@ -64,10 +67,29 @@ namespace ItemManagement_v2.Repositories
             _db.SaveChanges();
         }
 
-        public void UpdateApplicationUser(ApplicationUser user)
+        public void UpdateApplicationUser(ApplicationUserEdit user)
         {
-            _db.Users.Update(user);
+            var existingUser = this.GetApplicationUserById(user.Id);
+            existingUser.UserName = user.UserName;
+            existingUser.Email= user.Email;
+            _db.Users.Update(existingUser);
             _db.SaveChanges();
+        }
+
+        public IEnumerable<ApplicationUserWithRoles> GetApplicationUsersWithRoles()
+        {
+            return (from u in _db.Users
+                    join ur in _db.UserRoles on u.Id equals ur.UserId
+                    
+                    select new ApplicationUserWithRoles
+                    {
+                        Id = u.Id,
+                        Email = u.Email,
+                        Username = u.UserName,
+                        IsActive = u.IsActive,
+                        RoleId = ur.RoleId,
+                    }
+                    ).AsEnumerable();
         }
     }
 }

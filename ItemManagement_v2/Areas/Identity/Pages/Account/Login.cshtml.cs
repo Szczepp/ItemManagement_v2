@@ -81,10 +81,15 @@ namespace ItemManagement_v2.Areas.Identity.Pages.Account
             {
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
+                ApplicationUser user = await _userManager.FindByEmailAsync(Input.Email);
+                if (user.IsActive == false)
+                {
+                    ModelState.AddModelError(string.Empty, "This user is not active. Contact with administrator.");
+                    return Page();
+                }
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
-                    ApplicationUser user = await _userManager.FindByEmailAsync(Input.Email);
                     
                     if( await _userManager.IsInRoleAsync(user, "Admin"))
                     {

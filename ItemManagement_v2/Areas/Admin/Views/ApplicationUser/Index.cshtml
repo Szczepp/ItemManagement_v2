@@ -1,4 +1,4 @@
-﻿@model List<ApplicationUser>
+﻿@model IEnumerable<ApplicationUserWithRoles>
     
 @{
     int loopCounter = 1;
@@ -15,12 +15,13 @@
             <th > User ID </th>
             <th > UserName </th>
             <th > User Email </th>
-            <th > IsActive </th>
+            <th > Status </th>
             <th > Role </th>
-            <th > Action </th>
-            <th >  </th>
-            <th >  </th>
-            <th >  </th>
+            <th > Details </th>
+            <th > Edit</th>
+            <th > Status </th>
+            <th > Privilege </th>
+            <th > Delete </th>
         </tr>
     </thead>
     <tbody>
@@ -28,23 +29,46 @@
             <tr>
                 <th scope="row">@(loopCounter++)</th>
                 <td> @user.Id </td>
-                <td> @user.UserName </td>
+                <td> @user.Username </td>
                 <td> @user.Email </td>
                 <td> @user.IsActive </td>
-                <td> User role here </td>
-                <td colspan="4"><span class="no-wrap">
-                        <a class="nav-link text-dark" href="/admin/applicationUser/details?id=@user.Id"> <h4> <i class="bi bi-eye"></i> </h4> </a>
-                        <a class="nav-link text-dark" href="/admin/applicationUser/edit?id=@user.Id"> <h4> <i class="bi bi-pencil-square"></i> </h4> </a>
-                    @if(user.IsActive) {
-                            <a class="nav-link text-dark" href="/admin/applicationUser/block?id=@user.Id"> <h4> <i class="bi bi-lock"></i> </h4> </a>
-                    }else {
-                            <a class="nav-link text-dark" href="/admin/applicationUser/unblock?id=@user.Id"> <h4> <i class="bi bi-unlock"></i>  </h4></a>
+                <td> 
+                    @if(@user.RoleId == "2") {
+                        <p>Admin</p>
+                    } else {
+                        <p>User</p>
                     }
-                        @*icon to remove from admin<i class="bi bi-arrow-down-square"></i>*@
-                        <a class="nav-link text-dark" href="/admin/applicationUser/addToAdmin?id=@user.Id"> <h4> <i class="bi bi-arrow-up-square"></i> </h4></a>
-                        <a class="nav-link text-dark" href="/admin/applicationUser/delete?id=@user.Id" onclick="return confirm('Are you sure?')"> <h4> <i class="bi bi-trash"></i> </h4> </a>
-                        </span>
-                    </td>
+                </td>
+                <td>
+                        <a class="nav-link text-dark" href="/admin/applicationUser/details?id=@user.Id"> <h4> <i class="bi bi-eye" title="Show details"></i> </h4> </a>
+                </td>
+                <td>
+                        <a class="nav-link text-dark" href="/admin/applicationUser/edit?id=@user.Id"> <h4> <i class="bi bi-pencil-square" title="Edit"></i> </h4> </a>
+                </td>
+                <td>
+                        @if (user.IsActive)
+                        {
+                            <a class="nav-link text-dark" href="/admin/applicationUser/block?id=@user.Id"> <h4> <i class="bi bi-lock" title="Block User"></i> </h4> </a>
+                        }
+                        else
+                        {
+                            <a class="nav-link text-dark" href="/admin/applicationUser/unblock?id=@user.Id"> <h4> <i class="bi bi-unlock" title="Unblock User"></i>  </h4></a>
+                        }
+                </td>
+                <td>
+                        @if (user.RoleId == "1")
+                        {
+                            <a class="nav-link text-dark" href="/admin/applicationUser/addToAdmin?id=@user.Id"> <h4> <i class="bi bi-arrow-up-square" title="Add to Admin"></i> </h4></a>
+                        }
+                        else
+                        {
+                            <a class="nav-link text-dark" href="/admin/applicationUser/removeFromAdmin?id=@user.Id"> <h4> <i class="bi bi-arrow-down-square" title="Remove from Admin"></i> </h4></a>
+                        }
+                </td>        
+                <td>
+                        <a class="nav-link text-dark" href="/admin/applicationUser/delete?id=@user.Id" onclick="return confirm('Are you sure?')"> <h4> <i class="bi bi-trash" title="Delete User"></i> </h4> </a>
+
+                </td>
             </tr>
             }
     </tbody>

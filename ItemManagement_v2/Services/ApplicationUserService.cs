@@ -2,6 +2,7 @@
 using ItemManagement_v2.Services.Interfaces;
 using ItemManagement_v2.Repositories.Interfaces;
 using System.Collections.Generic;
+using ItemManagement_v2.ViewModels;
 
 namespace ItemManagement_v2.Services
 {
@@ -47,9 +48,14 @@ namespace ItemManagement_v2.Services
             _appUserRepo.UnblockApplicationUser(userId);
         }
 
-        public void UpdateApplicationUser(ApplicationUser user)
+        public void UpdateApplicationUser(ApplicationUserEdit user)
         {
             _appUserRepo.UpdateApplicationUser(user);
+        }
+
+        public IEnumerable<ApplicationUserWithRoles> GetApplicationUsersWithRoles()
+        {
+            return _appUserRepo.GetApplicationUsersWithRoles();
         }
     }
 }
