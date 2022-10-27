@@ -9,7 +9,7 @@ namespace ItemManagement_v2.Repositories.Interfaces
         List<Item> GetItems();
         List<Item> SearchItem(string Name);
         Item GetItemById(long id);
-        void CreateItem(Item item, string userId, string file);
+        void CreateItem(Item item, string userId, string image64);
         void UpdateItem(Item item, string file);
         void DeleteItem(long id);
 

@@ -27,7 +27,7 @@ namespace ItemManagement_v2.Services
 
         public void DeleteItem(long id)
         {
-            throw new System.NotImplementedException();
+            _itemRepo.DeleteItem(id);
         }
 
         public Item GetItemById(long id)

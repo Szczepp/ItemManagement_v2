@@ -19,7 +19,7 @@ namespace ItemManagement_v2.Repositories
         public void CreateItem(Item item, string userId, string file)
         {
             var user = _db.Users.Find(userId);
-            item.IdentityUser = user;
+            item.ApplicationUser = user;
             item.Image = file;
             _db.Items.Add(item);
             _db.SaveChanges();
@@ -27,12 +27,15 @@ namespace ItemManagement_v2.Repositories
 
         public void DeleteItem(long id)
         {
-            throw new System.NotImplementedException();
+            var item = this.GetItemById(id);
+            _db.Items.Remove(item);
+            _db.SaveChanges();
+
         }
 
         public Item GetItemById(long id)
         {
-            return _db.Items.Include(i => i.IdentityUser).Where(i => i.Id == id).FirstOrDefault();
+            return _db.Items.Include(i => i.ApplicationUser).Where(i => i.Id == id).FirstOrDefault();
         }
 
         public List<Item> GetItems()
@@ -55,7 +58,7 @@ namespace ItemManagement_v2.Repositories
             {
                 item.Image = image64;
             }
-            item.IdentityUser = existingItem.IdentityUser;
+            item.ApplicationUser = existingItem.ApplicationUser;
             _db.Entry(existingItem).CurrentValues.SetValues(item);
             _db.SaveChanges();
         }

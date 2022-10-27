@@ -1,5 +1,6 @@
 ﻿using ItemManagement_v2.Services;
 using ItemManagement_v2.Models;
+using ItemManagement_v2.Filters;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Http;
@@ -26,11 +27,13 @@ namespace ItemManagement_v2.Controllers
             return View(items);
         }
 
+        [AuthenticationFilter]
         public IActionResult Create()
         {
             return View();
         }
 
+        [AuthenticationFilter]
         [HttpPost]
         public IActionResult Create(Item item)
         {
@@ -50,12 +53,15 @@ namespace ItemManagement_v2.Controllers
             }
             return View(item);
         }
+
+        [AuthenticationFilter]
         public IActionResult Edit(long id)
         {
             Item item = _itemService.GetItemById(id);
             return View(item);
         }
 
+        [AuthenticationFilter]
         [HttpPost]
         public IActionResult Edit(Item item)
         {
@@ -69,6 +75,13 @@ namespace ItemManagement_v2.Controllers
             }
 
             _itemService.UpdateItem(item, file);
+            return RedirectToAction("Index");
+        }
+
+        [AuthenticationFilter]
+        public IActionResult Delete(long id)
+        {
+            _itemService.DeleteItem(id);
             return RedirectToAction("Index");
         }
     }

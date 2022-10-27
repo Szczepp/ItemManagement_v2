@@ -1,6 +1,7 @@
 using ItemManagement_v2.Contexts;
 using ItemManagement_v2.Repositories;
 using ItemManagement_v2.Services;
+using ItemManagement_v2.Filters;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -16,6 +17,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using ItemManagement_v2.Services.Interfaces;
 using ItemManagement_v2.Repositories.Interfaces;
+using Westwind.AspNetCore.Markdown;
+using System.Net;
+using ItemManagement_v2.Models;
 
 namespace ItemManagement_v2
 {
@@ -31,11 +35,10 @@ namespace ItemManagement_v2
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews();
             services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlServer(
                 Configuration.GetConnectionString("DefaultLocalConnection")));
-            services.AddIdentity<IdentityUser, IdentityRole>(
+            services.AddIdentity<ApplicationUser, IdentityRole>(
                 options =>
                     {
                         options.SignIn.RequireConfirmedAccount = false;
@@ -44,10 +47,19 @@ namespace ItemManagement_v2
                 .AddDefaultUI()
                 .AddDefaultTokenProviders()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+
             services.AddRazorPages();
+
             services.AddScoped<IItemService, ItemService>();
             services.AddScoped<IItemRepository, ItemRepository>();
+            services.AddScoped<ICollectionService, CollectionService>();
+            services.AddScoped<ICollectionRepository, CollectionRepository>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+            services.AddMarkdown();
+            services.AddMvc().AddApplicationPart(typeof(MarkdownPageProcessorMiddleware).Assembly);
+            
+            services.AddControllersWithViews();
 
         }
 
@@ -65,6 +77,8 @@ namespace ItemManagement_v2
                 app.UseHsts();
             }
             app.UseHttpsRedirection();
+            app.UseMarkdown();
+
             app.UseStaticFiles();
 
             app.UseRouting();
@@ -72,8 +86,21 @@ namespace ItemManagement_v2
             app.UseAuthentication();
             app.UseAuthorization();
 
+            app.UseStatusCodePages(async context =>
+            {
+                var response = context.HttpContext.Response;
+
+                if (response.StatusCode == (int)HttpStatusCode.Unauthorized ||
+                        response.StatusCode == (int)HttpStatusCode.Forbidden)
+                    response.Redirect("/Home");
+            });
+
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapControllerRoute(
+                    name: "areas",
+                    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+                );
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");

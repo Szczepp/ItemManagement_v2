@@ -1,0 +1,32 @@
+﻿@model List<Collection>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>User''s Collections</h2>
+
+<h2> Card View </h2>
+<div class="container">
+    <div class="py-5">
+        <div class="container">
+            <div class="row hidden-md-up">
+                @foreach (var itemCol in Model)
+                {
+                    <div class="col-md-4 ">
+                        <div class="card" style="width: 18rem;">
+                            <div class="card-block">
+                                <img src="data:image;base64,@itemCol.Image" class="card-img-top fit-image" alt="..." height="250">
+                                <div class="card-body ">
+                                    <h5 c lass="card-title">@itemCol.Name</h5>
+                                    
+                                    <a href="/collection/details?id=@itemCol.Id" class="btn btn-primary"> Show details </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
